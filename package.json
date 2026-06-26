@@ -2,7 +2,7 @@
   "name": "netflix-clone",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://github.io",
+  "homepage": "https://harshyadav12420007-bit.github.io/Netflix-clone",
   "type": "module",
   "scripts": {
   "dev": "vite",
