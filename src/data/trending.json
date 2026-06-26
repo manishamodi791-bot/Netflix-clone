@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "rank": 1,
+    "title": "Bhoot Bangla",
+    "hasNetflixBadge": false,
+    "poster": "https://image.tmdb.org/t/p/w500/gKS1Sge8lxrfNqSRRBXzHaDoaKL.jpg"
+  },
+  {
+    "id": 2,
+    "rank": 2,
+    "title": "Teach You a Lesson",
+    "hasNetflixBadge": true,
+    "poster": "https://image.tmdb.org/t/p/w500/qNBAXBIQlnOThrVvA6mA2B5ggkM.jpg"
+  },
+  {
+    "id": 3,
+    "rank": 3,
+    "title": "Maa Behen Aur Gharvali",
+    "hasNetflixBadge": true,
+    "poster": "https://image.tmdb.org/t/p/w500/iOVbZZNE6wYFKgMOCCONxKqOGRa.jpg"
+  },
+  {
+    "id": 4,
+    "rank": 4,
+    "title": "India's Got Latent",
+    "hasNetflixBadge": false,
+    "poster": "https://image.tmdb.org/t/p/w500/oIkQkEkwfmcG7IGpjzlNbRNMXBa.jpg"
+  },
+  {
+    "id": 5,
+    "rank": 5,
+    "title": "Sintonia",
+    "hasNetflixBadge": true,
+    "poster": "https://image.tmdb.org/t/p/w500/i1d7BCFH4DVJNTJUqQ8pRJT5MJY.jpg"
+  },
+  {
+    "id": 6,
+    "rank": 6,
+    "title": "Squid Game",
+    "hasNetflixBadge": true,
+    "poster": "https://image.tmdb.org/t/p/w500/dDlEmu3EZ0XkG1D2BqLNeMtOkul.jpg"
+  },
+  {
+    "id": 7,
+    "rank": 7,
+    "title": "Wednesday",
+    "hasNetflixBadge": true,
+    "poster": "https://image.tmdb.org/t/p/w500/9PFonBhy4cQy7Jz20NpMygczOkv.jpg"
+  },
+  {
+    "id": 8,
+    "rank": 8,
+    "title": "Stranger Things",
+    "hasNetflixBadge": true,
+    "poster": "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg"
+  },
+  {
+    "id": 9,
+    "rank": 9,
+    "title": "Peaky Blinders",
+    "hasNetflixBadge": false,
+    "poster": "https://image.tmdb.org/t/p/w500/vUUqzWa2LnHIVqkaKVn3YCAvqPc.jpg"
+  },
+  {
+    "id": 10,
+    "rank": 10,
+    "title": "Money Heist",
+    "hasNetflixBadge": true,
+    "poster": "https://image.tmdb.org/t/p/w500/reEMJA1uzscCbkpeRJeTT2bjqUp.jpg"
+  }
+]
