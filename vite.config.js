@@ -8,5 +8,5 @@ export default defineConfig({
     react(),
     babel({ presets: [reactCompilerPreset()] })
   ],
-  base: '/Netflix-clone/', //   This fixes the "404 Not Found" error on GitHub Pages
+  base: '/Netflix-clone/', //    This fixes the "404 Not Found" error on GitHub Pages
 })
