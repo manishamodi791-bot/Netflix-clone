@@ -344,3 +344,312 @@ body {
     font-size: 18px;
   }
 }
+
+
+/* ============================================================
+   TRENDING NOW SECTION
+   ── Layout: dark panel sitting immediately below the hero.
+   ── A thin red-to-dark gradient accent bar runs across the top
+      edge (visible in screenshot as a magenta/red stripe).
+   ── Contains a heading + one horizontally-scrollable card row.
+   ============================================================ */
+
+.trends-section {
+  /* Dark content background matching Netflix's browse page */
+  background-color: #141414;
+
+  /* Vertical padding: breathing room above heading, below last card */
+  padding: 28px 0 40px;
+
+  /* Needed so the ::before accent line can be absolutely positioned */
+  position: relative;
+
+  /* Prevent the huge rank numbers from causing page-level overflow */
+  overflow: hidden;
+}
+
+/* ── Red accent bar at the very top of the section ──
+   Replicates the pinkish-red stripe visible in the screenshot
+   that separates the hero from the trending row.             */
+.trends-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  /* Fades from bright red (left) → deep dark red (right) */
+  background: linear-gradient(
+    to right,
+    #e50914 0%,
+    #b20710 25%,
+    #831010 55%,
+    #3d0000 80%,
+    #141414 100%
+  );
+  z-index: 1;
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECTION HEADING  "Trending Now"
+   Left-aligned, white, semi-bold – matches Netflix's row titles
+   ──────────────────────────────────────────────────────────── */
+.trends-heading {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* Aligns with the left edge of the card row padding */
+  padding: 0 56px;
+  margin-bottom: 12px;
+}
+
+/* ────────────────────────────────────────────────────────────
+   ROW WRAPPER
+   Relative container that holds the scroll row plus the
+   absolutely-positioned left/right chevron buttons.
+   ──────────────────────────────────────────────────────────── */
+.trends-row-wrapper {
+  position: relative;
+}
+
+/* ────────────────────────────────────────────────────────────
+   SCROLLABLE CARD ROW
+   Horizontally scrollable flex row.
+   overflow-y is visible so the large rank numbers can
+   bleed slightly below without clipping.
+   ──────────────────────────────────────────────────────────── */
+.trends-row {
+  display: flex;
+  /* align-items: flex-end keeps rank numbers and posters
+     anchored to the same bottom baseline */
+  align-items: flex-end;
+  gap: 0;
+  padding: 20px 56px 24px;
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-behavior: smooth;
+
+  /* Hide scrollbar on all browsers */
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE 11 */
+}
+.trends-row::-webkit-scrollbar {
+  display: none;               /* Chrome / Safari */
+}
+
+/* ────────────────────────────────────────────────────────────
+   INDIVIDUAL CARD
+   Each card is a flex row: [rank number] + [poster].
+   The rank number is absolute so the poster can overlap it.
+   Total card width = rank portion + visible poster width.
+   ──────────────────────────────────────────────────────────── */
+.trends-card {
+  position: relative;
+  display: flex;
+  align-items: flex-end;   /* baseline-align rank & poster */
+  flex-shrink: 0;
+  cursor: pointer;
+
+  /* Total width = left rank area (≈80px) + poster (130px) */
+  width: 195px;
+}
+
+/* Bring card forward on hover so scale doesn't clip */
+.trends-card:hover {
+  z-index: 10;
+}
+
+/* ────────────────────────────────────────────────────────────
+   RANK NUMBER  — the "deep image" effect
+   ──────────────────────────────────────────────────────────────
+   The number is absolutely positioned at the bottom-left of
+   the card. z-index: 1 puts it BEHIND the poster (z-index: 2).
+   The poster's margin-left slides it RIGHT so it covers the
+   right ~40% of the number — creating the illusion that the
+   poster is sitting IN FRONT of the number.
+   ──────────────────────────────────────────────────────────── */
+.trends-rank {
+  /* Huge, heavy typeface */
+  font-size: 160px;
+  font-weight: 900;
+  font-family: 'Arial Black', 'Arial Bold', Arial, sans-serif;
+  line-height: 1;
+
+  /* Transparent fill + visible stroke = outlined number */
+  color: transparent;
+  -webkit-text-stroke: 4px #4a4a4a;
+
+  /* Anchor to bottom-left of the card */
+  position: absolute;
+  left: 0;
+  bottom: -8px;              /* slight bleed below card baseline */
+
+  /* BEHIND the poster */
+  z-index: 1;
+
+  /* Prevent text selection / interaction */
+  user-select: none;
+  pointer-events: none;
+
+  /* Tighten spacing for double-digit numbers */
+  letter-spacing: -6px;
+}
+
+/* ────────────────────────────────────────────────────────────
+   POSTER BOX
+   Sits to the RIGHT of (and ON TOP of) the rank number.
+   z-index: 2 ensures the image renders above the number.
+   ──────────────────────────────────────────────────────────── */
+.trends-poster {
+  position: relative;
+
+  /* Push poster right so it overlaps the rank number's right half */
+  margin-left: 68px;
+
+  /* Fixed poster dimensions matching Netflix's portrait card ratio */
+  width: 130px;
+  height: 190px;
+
+  border-radius: 6px;
+  overflow: hidden;
+
+  /* Render above rank number */
+  z-index: 2;
+
+  /* Smooth hover scale */
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+
+  /* Soft drop shadow to help poster "pop" from the background */
+  box-shadow: -4px 4px 20px rgba(0, 0, 0, 0.7);
+}
+
+/* Scale the poster card up on hover */
+.trends-card:hover .trends-poster {
+  transform: scale(1.08);
+}
+
+/* ── Poster image itself ── */
+.trends-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;    /* fill the box without distortion */
+  display: block;
+  border-radius: 6px;
+}
+
+/* ── Hover tint overlay (subtle darkening on hover) ── */
+.trends-poster__hover {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0);        /* transparent at rest */
+  transition: background 0.2s ease;
+}
+.trends-card:hover .trends-poster__hover {
+  background: rgba(0, 0, 0, 0.18);     /* slight dark tint on hover */
+}
+
+/* ────────────────────────────────────────────────────────────
+   NETFLIX BADGE
+   Small red ribbon with white "N" shown on Netflix Originals.
+   Positioned top-left corner of the poster.
+   ──────────────────────────────────────────────────────────── */
+.trends-badge {
+  position: absolute;
+  top: 0;
+  left: 6px;
+  z-index: 3;       /* above the poster image */
+  width: 22px;
+  height: 32px;
+  display: inline-flex;
+  align-items: flex-start;
+}
+.trends-badge svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ────────────────────────────────────────────────────────────
+   CHEVRON SCROLL BUTTONS
+   Absolutely positioned at left / right edges of the row.
+   Semi-transparent dark panels that reveal on hover.
+   ──────────────────────────────────────────────────────────── */
+.trends-chevron {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+
+  /* Dark translucent panel */
+  background: rgba(20, 20, 20, 0.75);
+  border: none;
+  color: #ffffff;
+
+  /* Large, easy-to-tap arrow character */
+  font-size: 40px;
+  line-height: 1;
+
+  width: 48px;
+  height: 200px;     /* spans most of the card row height */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.trends-chevron:hover {
+  background: rgba(20, 20, 20, 0.96);
+}
+
+/* Left chevron – flat left edge, rounded right */
+.trends-chevron--left {
+  left: 0;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Right chevron – rounded left edge, flat right */
+.trends-chevron--right {
+  right: 0;
+  border-radius: 4px 0 0 4px;
+}
+
+/* ────────────────────────────────────────────────────────────
+   RESPONSIVE  ≤ 768px
+   Shrink heading padding, card sizes, and rank font
+   ──────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Tighter heading indent on mobile */
+  .trends-heading {
+    padding: 0 20px;
+    font-size: 17px;
+  }
+
+  /* Less horizontal padding in the scroll row */
+  .trends-row {
+    padding: 14px 20px 18px;
+  }
+
+  /* Narrower card on small screens */
+  .trends-card {
+    width: 148px;
+  }
+
+  /* Smaller rank number */
+  .trends-rank {
+    font-size: 108px;
+    -webkit-text-stroke: 3px #4a4a4a;
+    letter-spacing: -4px;
+  }
+
+  /* Smaller poster */
+  .trends-poster {
+    margin-left: 50px;
+    width: 96px;
+    height: 142px;
+  }
+}
