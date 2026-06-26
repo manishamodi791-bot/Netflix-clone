@@ -1,0 +1,9 @@
+:root
+{
+  --primary-red:#E50914;
+  --primary-black:#151515;
+  /* Fixed Font Families */
+  --font-family-primary: "Sans regular", sans-serif; 
+  --font-family-secondary: "Sans medium", sans-serif; 
+  --font-family-heading: "Sans App bold", sans-serif; 
+}
