@@ -5,6 +5,8 @@
 :root {
   --red: #E50914;
   --red-hover: #c11119;
+  --bg: #fff;
+  --black: #000000;
 }
 
 *,
@@ -18,7 +20,7 @@
 body {
   background: #000;
   color: #fff;
-  font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -29,13 +31,15 @@ body {
 .hero-wrapper {
   position: relative;
   width: 100%;
-  /* The hero occupies the full viewport height on large screens */
   height: 100vh;
   min-height: 480px;
   max-height: 760px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  /* Allow the bottom edge to bleed into the next section */
+  margin-bottom: -40px;
+  z-index: 1;
 }
 
 /* ── Background image ── */
@@ -56,44 +60,81 @@ body {
 
 /* Left dark vignette */
 .hero-fade--left {
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 30%;
   height: 100%;
-  background: linear-gradient(to right, rgba(0,0,0,0.75) 0%, transparent 100%);
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.75) 0%, transparent 100%);
 }
 
 /* Right dark vignette */
 .hero-fade--right {
-  top: 0; right: 0;
+  top: 0;
+  right: 0;
   width: 30%;
   height: 100%;
-  background: linear-gradient(to left, rgba(0,0,0,0.75) 0%, transparent 100%);
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.75) 0%, transparent 100%);
 }
 
 /* Top fade so header text pops */
 .hero-fade--top {
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 180px;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, transparent 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.65) 0%, transparent 100%);
 }
 
 /* Bottom fade – heavy, creates the dark band seen in screenshot */
 .hero-fade--bottom {
-  bottom: 0; left: 0;
+  bottom: 0;
+  left: 0;
   width: 100%;
   height: 260px;
-  background: linear-gradient(to top, rgba(0,0,0,0.90) 0%, rgba(0,0,0,0.50) 50%, transparent 100%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.60) 50%, transparent 100%);
 }
 
-/* ── Bottom rule line ── */
+/* Overall darkening overlay to ensure text contrast */
+.hero-fade--overlay {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* ── Bottom rule line – glowing curved pink/red divider ── */
 .hero-rule {
   position: absolute;
-  bottom: 0; left: 0;
+  bottom: 0;
+  left: 0;
   width: 100%;
-  height: 8px;
-  background: #222;
+  height: 80px;          /* tall enough to hold the arc + glow */
   z-index: 4;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* The arc line itself via a pseudo-element */
+.hero-rule::before {
+  content: '';
+  position: absolute;
+  /* Oversized ellipse so only the top arc is visible */
+  left: -10%;
+  width: 120%;
+  /* Position so the very top edge of the ellipse sits ~20px from bottom */
+  bottom: -160px;
+  height: 220px;
+  border-radius: 50%;
+
+  /* Thin pink-red border on the top edge only */
+  border-top: 2px solid #e8005a;
+
+  /* Deep blue glow below the line matching the screenshot */
+  box-shadow:
+    0 -2px 18px 4px rgba(232, 0, 90, 0.55),   /* pink outer glow above */
+    0  6px 40px 12px rgba(10, 10, 80, 0.80);    /* blue glow below */
+
+  background: transparent;
 }
 
 /* ============================================================
@@ -115,20 +156,11 @@ body {
   display: inline-flex;
   text-decoration: none;
   flex-shrink: 0;
+  height: 90px;
+
   align-items: center;
 }
 
-/* Styled text wordmark – pixel-perfect red Netflix lettering */
-.netflix-wordmark {
-  color: var(--red);
-  font-size: 46px;
-  font-weight: 900;
-  font-family: 'Arial Black', 'Arial Bold', Arial, sans-serif;
-  letter-spacing: -1px;
-  line-height: 1;
-  text-transform: uppercase;
-  font-style: italic;
-}
 
 /* Right cluster */
 .hero-header__controls {
@@ -147,7 +179,7 @@ body {
 .lang-selector select {
   appearance: none;
   background: rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(255,255,255,0.6);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 4px;
   color: #fff;
   cursor: pointer;
@@ -208,37 +240,40 @@ body {
 .hero-body {
   position: relative;
   z-index: 3;
-  flex: 1;                    /* fill remaining space */
+  flex: 1;
+  /* fill remaining space */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0 24px 60px;       /* extra bottom pad to visually centre above the dark band */
+  padding: 0 24px 60px;
+  /* extra bottom pad to visually centre above the dark band */
 }
 
 .hero-title {
-  font-size: 52px;
+  font-size: 3rem;
   font-weight: 900;
-  line-height: 1.18;
-  letter-spacing: -0.3px;
-  margin-bottom: 18px;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+  margin-bottom: 1rem;
   max-width: 680px;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .hero-subtitle {
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 22px;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
 .hero-cta-note {
-  font-size: 17px;
+  font-size: 1rem;
   font-weight: 400;
-  margin-bottom: 16px;
-  color: rgba(255,255,255,0.92);
+  margin-bottom: 1rem;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 /* ── Email + CTA form ── */
@@ -246,41 +281,43 @@ body {
   display: flex;
   width: 100%;
   max-width: 640px;
+  gap: 8px;
 }
 
 .hero-form__input {
   flex: 1;
-  background: rgba(0, 0, 0, 0.65);
-  border: 1px solid rgba(255,255,255,0.55);
-  border-right: none;
-  border-radius: 4px 0 0 4px;
+  background: rgba(22, 22, 22, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
   color: #fff;
-  font-size: 16px;
+  font-size: 1rem;
   outline: none;
-  padding: 17px 16px;
-  transition: border-color 0.15s;
+  padding: 16px;
+  transition: all 0.15s ease;
 }
 
 .hero-form__input::placeholder {
-  color: rgba(255,255,255,0.55);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .hero-form__input:focus {
-  border-color: rgba(255,255,255,0.9);
+  border-color: #fff;
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .hero-form__btn {
   align-items: center;
+  justify-content: center;
   background: var(--red);
   border: none;
-  border-radius: 0 4px 4px 0;
+  border-radius: 4px;
   color: #fff;
   cursor: pointer;
   display: flex;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 700;
   gap: 8px;
-  padding: 0 28px;
+  padding: 16px 32px;
   transition: background 0.15s;
   white-space: nowrap;
 }
@@ -290,7 +327,7 @@ body {
 }
 
 .hero-form__arrow {
-  font-size: 30px;
+  font-size: 1.8rem;
   font-weight: 400;
   line-height: 1;
   margin-top: -2px;
@@ -311,7 +348,7 @@ body {
     padding: 16px 20px;
   }
 
-  .hero-logo svg {
+  .hero-logo img {
     height: 32px;
   }
 
@@ -329,86 +366,51 @@ body {
 
   .hero-form {
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
   }
 
   .hero-form__input {
-    border-right: 1px solid rgba(255,255,255,0.55);
-    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
   }
 
   .hero-form__btn {
-    border-radius: 4px;
-    justify-content: center;
-    padding: 14px 24px;
-    font-size: 18px;
+    width: auto;
+    align-self: center;
+    padding: 12px 24px;
+    font-size: 1.25rem;
   }
 }
 
 
 /* ============================================================
    TRENDING NOW SECTION
-   ── Layout: dark panel sitting immediately below the hero.
-   ── A thin red-to-dark gradient accent bar runs across the top
-      edge (visible in screenshot as a magenta/red stripe).
-   ── Contains a heading + one horizontally-scrollable card row.
+   ── Dark panel sitting immediately below the hero.
+   ── Plain poster cards in a horizontal scroll row — no rank numbers.
+   ── The hero's arc rule bleeds visually into this section.
    ============================================================ */
 
 .trends-section {
-  /* Dark content background matching Netflix's browse page */
-  background-color: #141414;
-
-  /* Vertical padding: breathing room above heading, below last card */
-  padding: 28px 0 40px;
-
-  /* Needed so the ::before accent line can be absolutely positioned */
+  background-color: #0a0a0a;
+  padding: 56px 0 32px;   /* top padding compensates for hero bleed */
   position: relative;
-
-  /* Prevent the huge rank numbers from causing page-level overflow */
   overflow: hidden;
-}
-
-/* ── Red accent bar at the very top of the section ──
-   Replicates the pinkish-red stripe visible in the screenshot
-   that separates the hero from the trending row.             */
-.trends-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  /* Fades from bright red (left) → deep dark red (right) */
-  background: linear-gradient(
-    to right,
-    #e50914 0%,
-    #b20710 25%,
-    #831010 55%,
-    #3d0000 80%,
-    #141414 100%
-  );
-  z-index: 1;
+  z-index: 0;             /* sits behind the hero's bottom edge */
 }
 
 /* ────────────────────────────────────────────────────────────
    SECTION HEADING  "Trending Now"
-   Left-aligned, white, semi-bold – matches Netflix's row titles
    ──────────────────────────────────────────────────────────── */
 .trends-heading {
   color: #ffffff;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-
-  /* Aligns with the left edge of the card row padding */
-  padding: 0 56px;
+  padding: 0 48px;
   margin-bottom: 12px;
 }
 
 /* ────────────────────────────────────────────────────────────
    ROW WRAPPER
-   Relative container that holds the scroll row plus the
-   absolutely-positioned left/right chevron buttons.
    ──────────────────────────────────────────────────────────── */
 .trends-row-wrapper {
   position: relative;
@@ -416,203 +418,134 @@ body {
 
 /* ────────────────────────────────────────────────────────────
    SCROLLABLE CARD ROW
-   Horizontally scrollable flex row.
-   overflow-y is visible so the large rank numbers can
-   bleed slightly below without clipping.
    ──────────────────────────────────────────────────────────── */
 .trends-row {
   display: flex;
-  /* align-items: flex-end keeps rank numbers and posters
-     anchored to the same bottom baseline */
-  align-items: flex-end;
-  gap: 0;
-  padding: 20px 56px 24px;
+  align-items: stretch;
+  gap: 6px;
+  padding: 4px 48px 8px;
   overflow-x: auto;
   overflow-y: visible;
   scroll-behavior: smooth;
-
-  /* Hide scrollbar on all browsers */
-  scrollbar-width: none;       /* Firefox */
-  -ms-overflow-style: none;    /* IE 11 */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+
 .trends-row::-webkit-scrollbar {
-  display: none;               /* Chrome / Safari */
+  display: none;
 }
 
 /* ────────────────────────────────────────────────────────────
-   INDIVIDUAL CARD
-   Each card is a flex row: [rank number] + [poster].
-   The rank number is absolute so the poster can overlap it.
-   Total card width = rank portion + visible poster width.
+   INDIVIDUAL CARD  — plain poster, no rank number
    ──────────────────────────────────────────────────────────── */
 .trends-card {
   position: relative;
-  display: flex;
-  align-items: flex-end;   /* baseline-align rank & poster */
   flex-shrink: 0;
+  width: 160px;
   cursor: pointer;
-
-  /* Total width = left rank area (≈80px) + poster (130px) */
-  width: 195px;
+  border-radius: 6px;
+  overflow: visible;
 }
 
-/* Bring card forward on hover so scale doesn't clip */
 .trends-card:hover {
   z-index: 10;
 }
 
-/* ────────────────────────────────────────────────────────────
-   RANK NUMBER  — the "deep image" effect
-   ──────────────────────────────────────────────────────────────
-   The number is absolutely positioned at the bottom-left of
-   the card. z-index: 1 puts it BEHIND the poster (z-index: 2).
-   The poster's margin-left slides it RIGHT so it covers the
-   right ~40% of the number — creating the illusion that the
-   poster is sitting IN FRONT of the number.
-   ──────────────────────────────────────────────────────────── */
+/* Hide the rank number completely */
 .trends-rank {
-  /* Huge, heavy typeface */
-  font-size: 160px;
-  font-weight: 900;
-  font-family: 'Arial Black', 'Arial Bold', Arial, sans-serif;
-  line-height: 1;
-
-  /* Transparent fill + visible stroke = outlined number */
-  color: transparent;
-  -webkit-text-stroke: 4px #4a4a4a;
-
-  /* Anchor to bottom-left of the card */
-  position: absolute;
-  left: 0;
-  bottom: -8px;              /* slight bleed below card baseline */
-
-  /* BEHIND the poster */
-  z-index: 1;
-
-  /* Prevent text selection / interaction */
-  user-select: none;
-  pointer-events: none;
-
-  /* Tighten spacing for double-digit numbers */
-  letter-spacing: -6px;
+  display: none;
 }
 
 /* ────────────────────────────────────────────────────────────
    POSTER BOX
-   Sits to the RIGHT of (and ON TOP of) the rank number.
-   z-index: 2 ensures the image renders above the number.
    ──────────────────────────────────────────────────────────── */
 .trends-poster {
   position: relative;
-
-  /* Push poster right so it overlaps the rank number's right half */
-  margin-left: 68px;
-
-  /* Fixed poster dimensions matching Netflix's portrait card ratio */
-  width: 130px;
-  height: 190px;
-
+  width: 160px;
+  height: 220px;
   border-radius: 6px;
   overflow: hidden;
-
-  /* Render above rank number */
   z-index: 2;
-
-  /* Smooth hover scale */
   transition: transform 0.25s ease;
   flex-shrink: 0;
-
-  /* Soft drop shadow to help poster "pop" from the background */
-  box-shadow: -4px 4px 20px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+  margin-left: 0;        /* override any inherited margin */
 }
 
-/* Scale the poster card up on hover */
 .trends-card:hover .trends-poster {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
-/* ── Poster image itself ── */
 .trends-poster img {
   width: 100%;
   height: 100%;
-  object-fit: cover;    /* fill the box without distortion */
+  object-fit: cover;
   display: block;
   border-radius: 6px;
 }
 
-/* ── Hover tint overlay (subtle darkening on hover) ── */
 .trends-poster__hover {
   position: absolute;
   inset: 0;
   border-radius: 6px;
-  background: rgba(0, 0, 0, 0);        /* transparent at rest */
+  background: rgba(0, 0, 0, 0);
   transition: background 0.2s ease;
 }
+
 .trends-card:hover .trends-poster__hover {
-  background: rgba(0, 0, 0, 0.18);     /* slight dark tint on hover */
+  background: rgba(0, 0, 0, 0.2);
 }
 
 /* ────────────────────────────────────────────────────────────
-   NETFLIX BADGE
-   Small red ribbon with white "N" shown on Netflix Originals.
-   Positioned top-left corner of the poster.
+   NETFLIX BADGE  — top-left corner ribbon
    ──────────────────────────────────────────────────────────── */
 .trends-badge {
   position: absolute;
   top: 0;
   left: 6px;
-  z-index: 3;       /* above the poster image */
-  width: 22px;
-  height: 32px;
+  z-index: 3;
+  width: 20px;
+  height: 30px;
   display: inline-flex;
   align-items: flex-start;
 }
-.trends-badge svg {
+
+.trends-badge img {
   width: 100%;
   height: 100%;
 }
 
 /* ────────────────────────────────────────────────────────────
    CHEVRON SCROLL BUTTONS
-   Absolutely positioned at left / right edges of the row.
-   Semi-transparent dark panels that reveal on hover.
    ──────────────────────────────────────────────────────────── */
 .trends-chevron {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   z-index: 20;
-
-  /* Dark translucent panel */
-  background: rgba(20, 20, 20, 0.75);
+  background: rgba(20, 20, 20, 0.80);
   border: none;
   color: #ffffff;
-
-  /* Large, easy-to-tap arrow character */
-  font-size: 40px;
+  font-size: 36px;
   line-height: 1;
-
-  width: 48px;
-  height: 200px;     /* spans most of the card row height */
-
+  width: 44px;
+  height: 180px;
   display: flex;
   align-items: center;
   justify-content: center;
-
   cursor: pointer;
   transition: background 0.15s ease;
 }
+
 .trends-chevron:hover {
-  background: rgba(20, 20, 20, 0.96);
+  background: rgba(20, 20, 20, 0.97);
 }
 
-/* Left chevron – flat left edge, rounded right */
 .trends-chevron--left {
   left: 0;
   border-radius: 0 4px 4px 0;
 }
 
-/* Right chevron – rounded left edge, flat right */
 .trends-chevron--right {
   right: 0;
   border-radius: 4px 0 0 4px;
@@ -620,36 +553,475 @@ body {
 
 /* ────────────────────────────────────────────────────────────
    RESPONSIVE  ≤ 768px
-   Shrink heading padding, card sizes, and rank font
    ──────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  /* Tighter heading indent on mobile */
   .trends-heading {
     padding: 0 20px;
-    font-size: 17px;
+    font-size: 16px;
   }
 
-  /* Less horizontal padding in the scroll row */
   .trends-row {
-    padding: 14px 20px 18px;
+    padding: 4px 20px 8px;
+    gap: 6px;
   }
 
-  /* Narrower card on small screens */
   .trends-card {
-    width: 148px;
+    width: 120px;
   }
 
-  /* Smaller rank number */
-  .trends-rank {
-    font-size: 108px;
-    -webkit-text-stroke: 3px #4a4a4a;
-    letter-spacing: -4px;
-  }
-
-  /* Smaller poster */
   .trends-poster {
-    margin-left: 50px;
-    width: 96px;
-    height: 142px;
+    width: 120px;
+    height: 165px;
+  }
+}
+
+
+/* ============================================================
+   MORE REASONS TO JOIN  –  Feature Cards Section
+   ── Four dark purple cards in a 4-column grid on desktop,
+      2 columns on tablet, 1 column on mobile.
+   ── Each card: title + description (top), glowing icon (bottom).
+   ── Section sits on a pure black background.
+   ============================================================ */
+
+/* ── Outer section wrapper ── */
+.reasons-section {
+  background-color: #000000;
+  /* pure black page background */
+  padding: 60px 56px;
+  /* generous top/bottom breathing room */
+}
+
+/* ────────────────────────────────────────────────────────────
+   SECTION HEADING  "More reasons to join"
+   White, semi-bold, left-aligned — matches the screenshot.
+   ──────────────────────────────────────────────────────────── */
+.reasons-heading {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 700;
+  font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin-bottom: 24px;
+}
+
+/* ────────────────────────────────────────────────────────────
+   CARD GRID
+   CSS Grid: 4 equal columns on desktop.
+   Gap between cards matches the visual spacing in the screenshot.
+   ──────────────────────────────────────────────────────────── */
+.reasons-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  /* 4 cards side-by-side on desktop */
+  gap: 12px;
+  /* gap between cards */
+}
+
+/* ────────────────────────────────────────────────────────────
+   INDIVIDUAL CARD
+   Dark blue-purple background with slightly rounded corners.
+   Uses flex-column so text sits at the top and the icon at
+   the bottom — matching the screenshot layout exactly.
+   ──────────────────────────────────────────────────────────── */
+.reason-card {
+  /* Deep blue-purple, matches the Netflix feature card color */
+  background-color: #1a0f2e;
+
+  border-radius: 12px;
+  /* nicely rounded corners */
+  padding: 28px 24px 24px;
+  /* inner spacing */
+
+  /* Column layout: text block on top, icon on bottom */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* pushes icon to the bottom */
+
+  /* Fixed card height so all four cards are the same size */
+  min-height: 280px;
+
+  /* Very subtle inner glow border */
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  /* Smooth hover lift effect */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: default;
+}
+
+/* Slight lift + glow on hover */
+.reason-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(124, 47, 247, 0.25);
+}
+
+/* ────────────────────────────────────────────────────────────
+   CARD TEXT BLOCK  (top half)
+   Title and description stacked vertically.
+   ──────────────────────────────────────────────────────────── */
+.reason-card__text {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* space between title and body */
+}
+
+/* Card title – larger, bold white */
+.reason-card__title {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.25;
+  font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Card description – smaller, muted white */
+.reason-card__desc {
+  color: rgba(255, 255, 255, 0.80);
+  /* slightly dimmed for hierarchy */
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.55;
+  font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* ────────────────────────────────────────────────────────────
+   CARD ICON  (bottom-right)
+   img icon is right-aligned at the bottom of each card.
+   Size is fixed so all icons appear at the same scale.
+   ──────────────────────────────────────────────────────────── */
+.reason-card__icon {
+  display: flex;
+  justify-content: flex-end;
+  /* push icon to the right */
+  align-items: flex-end;
+  margin-top: 16px;
+  /* gap between description and icon */
+}
+
+.reason-card__icon img {
+  width: 72px;
+  /* consistent icon size */
+  height: 56px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 12px rgba(200, 80, 192, 0.6));
+  /* purple glow */
+}
+
+/* ────────────────────────────────────────────────────────────
+   RESPONSIVE  –  TABLET  (≤ 900px)
+   Switch to a 2-column grid so cards don't get too narrow.
+   ──────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+
+  /* Tighter horizontal padding on tablet */
+  .reasons-section {
+    padding: 48px 32px;
+  }
+
+  /* 2 cards per row on tablet */
+  .reasons-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  /* Slightly smaller title on tablet */
+  .reason-card__title {
+    font-size: 19px;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────
+   RESPONSIVE  –  MOBILE  (≤ 480px)
+   Single-column stacked layout.
+   ──────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+
+  /* Compact horizontal padding on mobile */
+  .reasons-section {
+    padding: 36px 16px;
+  }
+
+  /* Heading size */
+  .reasons-heading {
+    font-size: 18px;
+    margin-bottom: 18px;
+  }
+
+  /* Single column on mobile */
+  .reasons-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Cards are shorter on mobile since they stack */
+  .reason-card {
+    min-height: 220px;
+    padding: 22px 20px 20px;
+  }
+
+  /* Smaller title on mobile */
+  .reason-card__title {
+    font-size: 18px;
+  }
+
+  /* Slightly smaller description text */
+  .reason-card__desc {
+    font-size: 14px;
+  }
+
+  /* Smaller icon on mobile */
+  .reason-card__icon img {
+    width: 58px;
+    height: 46px;
+  }
+}
+
+/* ============================================================
+   FAQ SECTION
+   ============================================================ */
+.faq-section {
+  background-color: #000;
+  padding: 60px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.faq-heading {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.faq-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.faq-item {
+  width: 100%;
+}
+
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: #2d2d2d;
+  border: none;
+  color: #fff;
+  padding: 24px;
+  font-size: 24px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  text-align: left;
+}
+
+.faq-question:hover {
+  background: #414141;
+}
+
+.faq-icon {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.faq-icon.open {
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  background: #2d2d2d;
+  color: #fff;
+  font-size: 24px;
+  line-height: 1.5;
+  text-align: left;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s cubic-bezier(0.5, 0, 0.1, 1), padding 0.25s cubic-bezier(0.5, 0, 0.1, 1);
+  margin-top: 1px;
+  /* Separator gap between question and answer */
+}
+
+.faq-answer.open {
+  max-height: 1200px;
+}
+
+.faq-answer-content {
+  padding: 24px;
+}
+
+.faq-answer p {
+  margin-bottom: 1rem;
+}
+
+.faq-answer p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .faq-section {
+    padding: 48px 24px;
+  }
+
+  .faq-heading {
+    font-size: 20px;
+  }
+
+  .faq-question,
+  .faq-answer {
+    font-size: 18px;
+    padding: 18px;
+  }
+}
+
+/* ============================================================
+   NEWSLETTER SECTION
+   ============================================================ */
+.newsletter-section {
+  background: #000;
+  padding: 60px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.newsletter-note {
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.newsletter-form {
+  display: flex;
+  width: 100%;
+  max-width: 640px;
+  gap: 8px;
+}
+
+.newsletter-form__input {
+  flex: 1;
+  background: rgba(22, 22, 22, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  padding: 16px;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.newsletter-form__input:focus {
+  border-color: #fff;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.newsletter-form__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 24px;
+  font-weight: 700;
+  padding: 16px 32px;
+  cursor: pointer;
+  gap: 8px;
+  transition: background 0.15s ease;
+  white-space: nowrap;
+}
+
+.newsletter-form__btn:hover {
+  background: var(--red-hover);
+}
+
+@media (max-width: 768px) {
+  .newsletter-form {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .newsletter-form__btn {
+    width: auto;
+    align-self: center;
+    font-size: 18px;
+    padding: 12px 24px;
+  }
+}
+
+/* ============================================================
+   FOOTER SECTION
+   ============================================================ */
+.footer-section {
+  background: #000;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 60px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-size: 14px;
+}
+
+.footer-top {
+  margin-bottom: 32px;
+}
+
+.footer-top a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: underline;
+}
+
+.footer-links {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.footer-link-item a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: underline;
+  transition: color 0.15s;
+}
+
+.footer-link-item a:hover {
+  color: #fff;
+}
+
+.footer-lang {
+  margin-bottom: 24px;
+}
+
+.footer-country {
+  margin-bottom: 16px;
+}
+
+.footer-recaptcha {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 768px) {
+  .footer-section {
+    padding: 60px 24px;
+  }
+
+  .footer-links {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-links {
+    grid-template-columns: 1fr;
   }
 }
