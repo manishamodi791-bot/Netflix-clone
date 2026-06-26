@@ -1,9 +1,346 @@
-:root
-{
-  --primary-red:#E50914;
-  --primary-black:#151515;
-  /* Fixed Font Families */
-  --font-family-primary: "Sans regular", sans-serif; 
-  --font-family-secondary: "Sans medium", sans-serif; 
-  --font-family-heading: "Sans App bold", sans-serif; 
+/* ============================================================
+   Netflix Clone – Reset + Global
+   ============================================================ */
+
+:root {
+  --red: #E50914;
+  --red-hover: #c11119;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #000;
+  color: #fff;
+  font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   Hero wrapper  –  fixed height like the real Netflix landing
+   ============================================================ */
+
+.hero-wrapper {
+  position: relative;
+  width: 100%;
+  /* The hero occupies the full viewport height on large screens */
+  height: 100vh;
+  min-height: 480px;
+  max-height: 760px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Background image ── */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center center;
+  z-index: 0;
+}
+
+/* ── Edge / directional fades ── */
+.hero-fade {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Left dark vignette */
+.hero-fade--left {
+  top: 0; left: 0;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0,0,0,0.75) 0%, transparent 100%);
+}
+
+/* Right dark vignette */
+.hero-fade--right {
+  top: 0; right: 0;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(to left, rgba(0,0,0,0.75) 0%, transparent 100%);
+}
+
+/* Top fade so header text pops */
+.hero-fade--top {
+  top: 0; left: 0;
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, transparent 100%);
+}
+
+/* Bottom fade – heavy, creates the dark band seen in screenshot */
+.hero-fade--bottom {
+  bottom: 0; left: 0;
+  width: 100%;
+  height: 260px;
+  background: linear-gradient(to top, rgba(0,0,0,0.90) 0%, rgba(0,0,0,0.50) 50%, transparent 100%);
+}
+
+/* ── Bottom rule line ── */
+.hero-rule {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%;
+  height: 8px;
+  background: #222;
+  z-index: 4;
+}
+
+/* ============================================================
+   Header
+   ============================================================ */
+
+.hero-header {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 48px;
+  width: 100%;
+}
+
+/* Netflix logo */
+.hero-logo {
+  display: inline-flex;
+  text-decoration: none;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+/* Styled text wordmark – pixel-perfect red Netflix lettering */
+.netflix-wordmark {
+  color: var(--red);
+  font-size: 46px;
+  font-weight: 900;
+  font-family: 'Arial Black', 'Arial Bold', Arial, sans-serif;
+  letter-spacing: -1px;
+  line-height: 1;
+  text-transform: uppercase;
+  font-style: italic;
+}
+
+/* Right cluster */
+.hero-header__controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── Language selector ── */
+.lang-selector {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.lang-selector select {
+  appearance: none;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  outline: none;
+  /* padding: left (globe) + text + right (arrow) */
+  padding: 7px 30px 7px 34px;
+  transition: border-color 0.15s;
+}
+
+.lang-selector select:hover,
+.lang-selector select:focus {
+  border-color: #fff;
+}
+
+/* globe icon */
+.lang-selector__globe {
+  position: absolute;
+  left: 10px;
+  display: inline-flex;
+  align-items: center;
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* dropdown caret */
+.lang-selector__arrow {
+  position: absolute;
+  right: 9px;
+  font-size: 11px;
+  color: #fff;
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* ── Sign In button ── */
+.btn-signin {
+  background: var(--red);
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 8px 18px;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.btn-signin:hover {
+  background: var(--red-hover);
+}
+
+/* ============================================================
+   Hero body  –  vertically centered between header and bottom
+   ============================================================ */
+
+.hero-body {
+  position: relative;
+  z-index: 3;
+  flex: 1;                    /* fill remaining space */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 24px 60px;       /* extra bottom pad to visually centre above the dark band */
+}
+
+.hero-title {
+  font-size: 52px;
+  font-weight: 900;
+  line-height: 1.18;
+  letter-spacing: -0.3px;
+  margin-bottom: 18px;
+  max-width: 680px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.hero-subtitle {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 22px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+.hero-cta-note {
+  font-size: 17px;
+  font-weight: 400;
+  margin-bottom: 16px;
+  color: rgba(255,255,255,0.92);
+}
+
+/* ── Email + CTA form ── */
+.hero-form {
+  display: flex;
+  width: 100%;
+  max-width: 640px;
+}
+
+.hero-form__input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(255,255,255,0.55);
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+  padding: 17px 16px;
+  transition: border-color 0.15s;
+}
+
+.hero-form__input::placeholder {
+  color: rgba(255,255,255,0.55);
+}
+
+.hero-form__input:focus {
+  border-color: rgba(255,255,255,0.9);
+}
+
+.hero-form__btn {
+  align-items: center;
+  background: var(--red);
+  border: none;
+  border-radius: 0 4px 4px 0;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  font-size: 24px;
+  font-weight: 700;
+  gap: 8px;
+  padding: 0 28px;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.hero-form__btn:hover {
+  background: var(--red-hover);
+}
+
+.hero-form__arrow {
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1;
+  margin-top: -2px;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .hero-wrapper {
+    max-height: none;
+    height: auto;
+    min-height: 520px;
+  }
+
+  .hero-header {
+    padding: 16px 20px;
+  }
+
+  .hero-logo svg {
+    height: 32px;
+  }
+
+  .hero-title {
+    font-size: 30px;
+  }
+
+  .hero-subtitle {
+    font-size: 17px;
+  }
+
+  .hero-cta-note {
+    font-size: 14px;
+  }
+
+  .hero-form {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hero-form__input {
+    border-right: 1px solid rgba(255,255,255,0.55);
+    border-radius: 4px;
+  }
+
+  .hero-form__btn {
+    border-radius: 4px;
+    justify-content: center;
+    padding: 14px 24px;
+    font-size: 18px;
+  }
 }
