@@ -421,8 +421,8 @@ body {
    ──────────────────────────────────────────────────────────── */
 .trends-row {
   display: flex;
-  align-items: stretch;
-  gap: 6px;
+  align-items: flex-end;
+  gap: 0;
   padding: 4px 48px 8px;
   overflow-x: auto;
   overflow-y: visible;
@@ -436,24 +436,48 @@ body {
 }
 
 /* ────────────────────────────────────────────────────────────
-   INDIVIDUAL CARD  — plain poster, no rank number
+   INDIVIDUAL CARD  — rank number + poster overlapping layout
    ──────────────────────────────────────────────────────────── */
 .trends-card {
   position: relative;
   flex-shrink: 0;
-  width: 160px;
+  /* total card width = rank number zone + poster */
+  width: 200px;
   cursor: pointer;
-  border-radius: 6px;
   overflow: visible;
+  display: flex;
+  align-items: flex-end;
 }
 
 .trends-card:hover {
   z-index: 10;
 }
 
-/* Hide the rank number completely */
+/* ────────────────────────────────────────────────────────────
+   RANK NUMBER — large outlined digit on the left
+   The poster overlaps it from the right (~50% of its width).
+   ──────────────────────────────────────────────────────────── */
 .trends-rank {
-  display: none;
+  display: block;
+  position: relative;
+  z-index: 1;
+  /* rank sits behind the poster */
+  flex-shrink: 0;
+  width: 88px;
+  /* visible width of the number area */
+  line-height: 1;
+  font-size: 160px;
+  font-weight: 900;
+  font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  /* Outlined / stroked text — no fill, white stroke */
+  color: transparent;
+  -webkit-text-stroke: 4px #ffffff;
+  text-stroke: 4px #ffffff;
+  /* Align the bottom of the digit with the bottom of the poster */
+  align-self: flex-end;
+  /* shift right so the poster overlaps the right portion of the digit */
+  margin-right: -52px;
+  user-select: none;
 }
 
 /* ────────────────────────────────────────────────────────────
@@ -461,15 +485,14 @@ body {
    ──────────────────────────────────────────────────────────── */
 .trends-poster {
   position: relative;
-  width: 160px;
-  height: 220px;
+  width: 140px;
+  height: 200px;
   border-radius: 6px;
   overflow: hidden;
   z-index: 2;
   transition: transform 0.25s ease;
   flex-shrink: 0;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
-  margin-left: 0;        /* override any inherited margin */
 }
 
 .trends-card:hover .trends-poster {
@@ -562,16 +585,22 @@ body {
 
   .trends-row {
     padding: 4px 20px 8px;
-    gap: 6px;
   }
 
   .trends-card {
-    width: 120px;
+    width: 150px;
+  }
+
+  .trends-rank {
+    font-size: 110px;
+    width: 64px;
+    margin-right: -38px;
+    -webkit-text-stroke: 3px #ffffff;
   }
 
   .trends-poster {
-    width: 120px;
-    height: 165px;
+    width: 104px;
+    height: 148px;
   }
 }
 

@@ -10,7 +10,7 @@ const Trends = () => {
   /* ── scroll helpers ── */
   const scrollRow = (dir) => {
     rowRef.current?.scrollBy({
-      left: dir === 'right' ? 680 : -680,
+      left: dir === 'right' ? 600 : -600,
       behavior: 'smooth',
     });
   };
